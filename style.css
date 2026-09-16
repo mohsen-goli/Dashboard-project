@@ -398,3 +398,6 @@ tbody tr:hover {
     height: 220px;
   }
 }
+#noResults {
+  text-align: center;
+}

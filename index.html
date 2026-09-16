@@ -1,248 +1,196 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Dashboard</title>
 
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">NovaAdmin</div>
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-link active"> Dashboard </a>
 
-            <div class="logo">
-                NovaAdmin
+          <a href="#" class="nav-link"> Products </a>
+
+          <a href="#" class="nav-link"> Orders </a>
+
+          <a href="#" class="nav-link"> Customers </a>
+
+          <a href="#" class="nav-link"> Analytics </a>
+
+          <a href="#" class="nav-link"> Settings </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+          <div>
+            <h1>Dashboard</h1>
+            <p>Welcome back, Admin.</p>
+          </div>
+
+          <div class="header-actions">
+            <div class="search-box">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search orders..."
+              />
+              <button class="search-button">Search</button>
             </div>
 
-            <nav class="sidebar-nav">
+            <button class="notification-button">Notifications</button>
 
-                <a href="#" class="nav-link active">
-                    Dashboard
-                </a>
+            <div class="profile">Admin</div>
+          </div>
+        </header>
 
-                <a href="#" class="nav-link">
-                    Products
-                </a>
+        <!-- Dashboard Content -->
+        <section class="dashboard-content">
+          <!-- Statistics -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <p>Total Revenue</p>
+              <h2>$24,580</h2>
+              <span>+12.5%</span>
+            </div>
 
-                <a href="#" class="nav-link">
-                    Orders
-                </a>
+            <div class="stat-card">
+              <p>Total Orders</p>
+              <h2>1,248</h2>
+              <span>+8.2%</span>
+            </div>
 
-                <a href="#" class="nav-link">
-                    Customers
-                </a>
+            <div class="stat-card">
+              <p>Customers</p>
+              <h2>8,549</h2>
+              <span>+5.4%</span>
+            </div>
 
-                <a href="#" class="nav-link">
-                    Analytics
-                </a>
+            <div class="stat-card">
+              <p>Conversion Rate</p>
+              <h2>8.4%</h2>
+              <span>+2.1%</span>
+            </div>
+          </div>
 
-                <a href="#" class="nav-link">
-                    Settings
-                </a>
+          <!-- Sales Chart -->
+          <section class="chart-card">
+            <div class="section-header">
+              <div>
+                <h2>Sales Overview</h2>
+                <p>Monthly sales performance</p>
+              </div>
 
-            </nav>
+              <button>Last 7 months</button>
+            </div>
 
-        </aside>
+            <div class="chart-placeholder">Chart will be here</div>
+          </section>
 
-
-        <!-- Main Content -->
-        <main class="main-content">
-
-            <!-- Header -->
-            <header class="header">
-
+          <!-- Bottom Section -->
+          <div class="bottom-grid">
+            <!-- Recent Orders -->
+            <section class="orders-card">
+              <div class="section-header">
                 <div>
-                    <h1>Dashboard</h1>
-                    <p>Welcome back, Admin.</p>
+                  <h2>Recent Orders</h2>
+                  <p>Latest customer orders</p>
                 </div>
 
-                <div class="header-actions">
+                <button>View All</button>
+              </div>
 
-                    <button class="search-button">
-                        Search
-                    </button>
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Order</th>
+                      <th>Customer</th>
+                      <th>Product</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
 
-                    <button class="notification-button">
-                        Notifications
-                    </button>
+                  <tbody>
+                    <tr>
+                      <td>#1024</td>
+                      <td>John Smith</td>
+                      <td>Wireless Headphones</td>
+                      <td>$129</td>
+                      <td>Completed</td>
+                    </tr>
 
-                    <div class="profile">
-                        Admin
-                    </div>
+                    <tr>
+                      <td>#1025</td>
+                      <td>Emma Brown</td>
+                      <td>Smart Watch</td>
+                      <td>$199</td>
+                      <td>Pending</td>
+                    </tr>
 
-                </div>
-
-            </header>
-
-
-            <!-- Dashboard Content -->
-            <section class="dashboard-content">
-
-                <!-- Statistics -->
-                <div class="stats-grid">
-
-                    <div class="stat-card">
-                        <p>Total Revenue</p>
-                        <h2>$24,580</h2>
-                        <span>+12.5%</span>
-                    </div>
-
-                    <div class="stat-card">
-                        <p>Total Orders</p>
-                        <h2>1,248</h2>
-                        <span>+8.2%</span>
-                    </div>
-
-                    <div class="stat-card">
-                        <p>Customers</p>
-                        <h2>8,549</h2>
-                        <span>+5.4%</span>
-                    </div>
-
-                    <div class="stat-card">
-                        <p>Conversion Rate</p>
-                        <h2>8.4%</h2>
-                        <span>+2.1%</span>
-                    </div>
-
-                </div>
-
-
-                <!-- Sales Chart -->
-                <section class="chart-card">
-
-                    <div class="section-header">
-                        <div>
-                            <h2>Sales Overview</h2>
-                            <p>Monthly sales performance</p>
-                        </div>
-
-                        <button>Last 7 months</button>
-                    </div>
-
-                    <div class="chart-placeholder">
-                        Chart will be here
-                    </div>
-
-                </section>
-
-
-                <!-- Bottom Section -->
-                <div class="bottom-grid">
-
-                    <!-- Recent Orders -->
-                    <section class="orders-card">
-
-                        <div class="section-header">
-                            <div>
-                                <h2>Recent Orders</h2>
-                                <p>Latest customer orders</p>
-                            </div>
-
-                            <button>View All</button>
-                        </div>
-
-                        <div class="table-container">
-
-                            <table>
-
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Customer</th>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-
-                                    <tr>
-                                        <td>#1024</td>
-                                        <td>John Smith</td>
-                                        <td>Wireless Headphones</td>
-                                        <td>$129</td>
-                                        <td>Completed</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>#1025</td>
-                                        <td>Emma Brown</td>
-                                        <td>Smart Watch</td>
-                                        <td>$199</td>
-                                        <td>Pending</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>#1026</td>
-                                        <td>Michael Lee</td>
-                                        <td>Mechanical Keyboard</td>
-                                        <td>$149</td>
-                                        <td>Completed</td>
-                                    </tr>
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    </section>
-
-
-                    <!-- Top Products -->
-                    <section class="products-card">
-
-                        <div class="section-header">
-                            <div>
-                                <h2>Top Products</h2>
-                                <p>Best selling products</p>
-                            </div>
-                        </div>
-
-                        <div class="product-list">
-
-                            <div class="product-item">
-                                <span>Wireless Headphones</span>
-                                <strong>$12,450</strong>
-                            </div>
-
-                            <div class="product-item">
-                                <span>Smart Watch</span>
-                                <strong>$9,820</strong>
-                            </div>
-
-                            <div class="product-item">
-                                <span>Mechanical Keyboard</span>
-                                <strong>$7,540</strong>
-                            </div>
-
-                            <div class="product-item">
-                                <span>Gaming Mouse</span>
-                                <strong>$5,240</strong>
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                </div>
-
+                    <tr>
+                      <td>#1026</td>
+                      <td>Michael Lee</td>
+                      <td>Mechanical Keyboard</td>
+                      <td>$149</td>
+                      <td>Completed</td>
+                    </tr>
+                    <tr id="noResults">
+                      <td colspan="5">No orders found</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
-        </main>
+            <!-- Top Products -->
+            <section class="products-card">
+              <div class="section-header">
+                <div>
+                  <h2>Top Products</h2>
+                  <p>Best selling products</p>
+                </div>
+              </div>
 
+              <div class="product-list">
+                <div class="product-item">
+                  <span>Wireless Headphones</span>
+                  <strong>$12,450</strong>
+                </div>
+
+                <div class="product-item">
+                  <span>Smart Watch</span>
+                  <strong>$9,820</strong>
+                </div>
+
+                <div class="product-item">
+                  <span>Mechanical Keyboard</span>
+                  <strong>$7,540</strong>
+                </div>
+
+                <div class="product-item">
+                  <span>Gaming Mouse</span>
+                  <strong>$5,240</strong>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
     </div>
 
-
     <script src="script.js"></script>
-
-</body>
+  </body>
 </html>
