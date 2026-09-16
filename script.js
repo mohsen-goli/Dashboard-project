@@ -54,3 +54,12 @@ searchInput.addEventListener("input", function () {
     noResults.style.display = "none";
   }
 });
+// ===============================
+// Dark Mode
+// ===============================
+
+const themeButton = document.getElementById("themeButton");
+
+themeButton.addEventListener("click", function () {
+  document.body.classList.toggle("dark-mode");
+});
