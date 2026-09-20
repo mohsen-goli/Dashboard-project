@@ -17,44 +17,6 @@ navLinks.forEach(function (link) {
 });
 
 // ===============================
-// Order Search
-// ===============================
-
-const searchInput = document.getElementById("searchInput");
-
-const orderRows = document.querySelectorAll("tbody tr:not(#noResults)");
-
-const noResults = document.getElementById("noResults");
-
-// Hide message when page loads
-noResults.style.display = "none";
-
-// Search when user types
-searchInput.addEventListener("input", function () {
-  const searchTerm = searchInput.value.toLowerCase();
-
-  let foundOrders = 0;
-
-  orderRows.forEach(function (row) {
-    const rowText = row.textContent.toLowerCase();
-
-    if (rowText.includes(searchTerm)) {
-      row.style.display = "";
-      foundOrders++;
-    } else {
-      row.style.display = "none";
-    }
-  });
-
-  // Show / hide "No orders found"
-
-  if (foundOrders === 0) {
-    noResults.style.display = "";
-  } else {
-    noResults.style.display = "none";
-  }
-});
-// ===============================
 // Dark Mode
 // ===============================
 
@@ -62,4 +24,101 @@ const themeButton = document.getElementById("themeButton");
 
 themeButton.addEventListener("click", function () {
   document.body.classList.toggle("dark-mode");
+});
+
+// ===============================
+// Order Data
+// ===============================
+
+const orders = [
+  {
+    id: "#1024",
+    customer: "John Smith",
+    product: "Wireless Headphones",
+    price: "$129",
+    status: "Completed",
+  },
+  {
+    id: "#1025",
+    customer: "Emma Brown",
+    product: "Smart Watch",
+    price: "$199",
+    status: "Pending",
+  },
+  {
+    id: "#1026",
+    customer: "Michael Lee",
+    product: "Mechanical Keyboard",
+    price: "$149",
+    status: "Completed",
+  },
+];
+
+// ===============================
+// Orders Elements
+// ===============================
+
+const ordersTableBody = document.querySelector("tbody");
+const noResults = document.getElementById("noResults");
+const searchInput = document.getElementById("searchInput");
+
+// ===============================
+// Render Orders
+// ===============================
+
+function renderOrders(orderList) {
+  // Remove old dynamic rows
+  const existingRows = ordersTableBody.querySelectorAll("tr:not(#noResults)");
+
+  existingRows.forEach(function (row) {
+    row.remove();
+  });
+
+  // Create new rows
+  orderList.forEach(function (order) {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+            <td>${order.id}</td>
+            <td>${order.customer}</td>
+            <td>${order.product}</td>
+            <td>${order.price}</td>
+            <td>${order.status}</td>
+        `;
+
+    ordersTableBody.insertBefore(row, noResults);
+  });
+
+  // Show / hide "No orders found"
+  if (orderList.length === 0) {
+    noResults.style.display = "";
+  } else {
+    noResults.style.display = "none";
+  }
+}
+
+// ===============================
+// Initial Render
+// ===============================
+
+renderOrders(orders);
+
+// ===============================
+// Search Orders
+// ===============================
+
+searchInput.addEventListener("input", function () {
+  const searchTerm = searchInput.value.toLowerCase().trim();
+
+  const filteredOrders = orders.filter(function (order) {
+    return (
+      order.id.toLowerCase().includes(searchTerm) ||
+      order.customer.toLowerCase().includes(searchTerm) ||
+      order.product.toLowerCase().includes(searchTerm) ||
+      order.price.toLowerCase().includes(searchTerm) ||
+      order.status.toLowerCase().includes(searchTerm)
+    );
+  });
+
+  renderOrders(filteredOrders);
 });
