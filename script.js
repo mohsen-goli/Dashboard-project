@@ -27,32 +27,12 @@ themeButton.addEventListener("click", function () {
 });
 
 // ===============================
-// Order Data
+// Orders
 // ===============================
 
-const orders = [
-  {
-    id: "#1024",
-    customer: "John Smith",
-    product: "Wireless Headphones",
-    price: "$129",
-    status: "Completed",
-  },
-  {
-    id: "#1025",
-    customer: "Emma Brown",
-    product: "Smart Watch",
-    price: "$199",
-    status: "Pending",
-  },
-  {
-    id: "#1026",
-    customer: "Michael Lee",
-    product: "Mechanical Keyboard",
-    price: "$149",
-    status: "Completed",
-  },
-];
+// فعلاً سفارش‌ها خالی هستند.
+// بعداً اطلاعات را از JSON می‌گیریم.
+let orders = [];
 
 // ===============================
 // Orders Elements
@@ -61,13 +41,48 @@ const orders = [
 const ordersTableBody = document.querySelector("tbody");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
+const loadingMessage = document.getElementById("loadingMessage");
+const errorMessage = document.getElementById("errorMessage");
+
+// ===============================
+// Dashboard Elements
+// ===============================
+
+const totalOrders = document.getElementById("totalOrders");
+const totalRevenue = document.getElementById("totalRevenue");
+const totalCustomers = document.getElementById("totalCustomers");
+
+// ===============================
+// Update Dashboard Stats
+// ===============================
+
+function updateStats() {
+  // Total Orders
+  totalOrders.textContent = orders.length;
+
+  // Total Revenue
+  const revenue = orders.reduce(function (total, order) {
+    return total + Number(order.price.replace("$", ""));
+  }, 0);
+
+  totalRevenue.textContent = "$" + revenue.toLocaleString();
+
+  // Total Customers
+  const customers = new Set(
+    orders.map(function (order) {
+      return order.customer;
+    }),
+  );
+
+  totalCustomers.textContent = customers.size;
+}
 
 // ===============================
 // Render Orders
 // ===============================
 
 function renderOrders(orderList) {
-  // Remove old dynamic rows
+  // Remove old rows
   const existingRows = ordersTableBody.querySelectorAll("tr:not(#noResults)");
 
   existingRows.forEach(function (row) {
@@ -83,12 +98,11 @@ function renderOrders(orderList) {
             <td>${order.customer}</td>
             <td>${order.product}</td>
             <td>${order.price}</td>
-            <td>${order.status}</td>
             <td>
-        <span class="status ${order.status.toLowerCase()}">
-            ${order.status}
-        </span>
-    </td>
+                <span class="status ${order.status.toLowerCase()}">
+                    ${order.status}
+                </span>
+            </td>
         `;
 
     ordersTableBody.insertBefore(row, noResults);
@@ -101,12 +115,6 @@ function renderOrders(orderList) {
     noResults.style.display = "none";
   }
 }
-
-// ===============================
-// Initial Render
-// ===============================
-
-renderOrders(orders);
 
 // ===============================
 // Search Orders
@@ -127,26 +135,28 @@ searchInput.addEventListener("input", function () {
 
   renderOrders(filteredOrders);
 });
+
 // ===============================
-// Total Orders
+// Load Orders From JSON
 // ===============================
 
-const totalOrders = document.getElementById("totalOrders");
+fetch("./data/orders.json")
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (data) {
+    orders = data;
 
-totalOrders.textContent = orders.length;
-const totalRevenue = document.getElementById("totalRevenue");
+    loadingMessage.style.display = "none";
 
-const revenue = orders.reduce(function (total, order) {
-  return total + Number(order.price.replace("$", ""));
-}, 0);
+    updateStats();
 
-totalRevenue.textContent = "$" + revenue.toLocaleString();
-const totalCustomers = document.getElementById("totalCustomers");
+    renderOrders(orders);
+  })
+  .catch(function (error) {
+    loadingMessage.style.display = "none";
 
-const customers = new Set(
-  orders.map(function (order) {
-    return order.customer;
-  }),
-);
+    errorMessage.textContent = "Failed to load orders.";
 
-totalCustomers.textContent = customers.size;
+    console.error("Error loading orders:", error);
+  });
