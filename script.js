@@ -122,3 +122,10 @@ searchInput.addEventListener("input", function () {
 
   renderOrders(filteredOrders);
 });
+// ===============================
+// Total Orders
+// ===============================
+
+const totalOrders = document.getElementById("totalOrders");
+
+totalOrders.textContent = orders.length;
