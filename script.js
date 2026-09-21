@@ -39,7 +39,7 @@ let orders = [];
 const ordersTableBody = document.querySelector("tbody");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
-
+const filterButtons = document.querySelectorAll(".filter-button");
 // ===============================
 // Dashboard Elements
 // ===============================
@@ -152,6 +152,32 @@ function createSalesChart() {
     });
 
     const price = Number(order.price.replace("$", ""));
+    // ===============================
+    // Order Status Filter
+    // ===============================
+
+    filterButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        const selectedStatus = button.dataset.status;
+
+        filterButtons.forEach(function (item) {
+          item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        if (selectedStatus === "all") {
+          renderOrders(orders);
+          return;
+        }
+
+        const filteredOrders = orders.filter(function (order) {
+          return order.status === selectedStatus;
+        });
+
+        renderOrders(filteredOrders);
+      });
+    });
 
     // Create month if it doesn't exist
     if (!monthlySales[month]) {

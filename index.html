@@ -4,35 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Dashboard</title>
+    <title>NovaAdmin Dashboard</title>
 
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <div class="dashboard">
-      <!-- Sidebar -->
+      <!-- ===============================
+           Sidebar
+      ================================ -->
+
       <aside class="sidebar">
         <div class="logo">NovaAdmin</div>
 
         <nav class="sidebar-nav">
-          <a href="#" class="nav-link active"> Dashboard </a>
-
-          <a href="#" class="nav-link"> Products </a>
-
-          <a href="#" class="nav-link"> Orders </a>
-
-          <a href="#" class="nav-link"> Customers </a>
-
-          <a href="#" class="nav-link"> Analytics </a>
-
-          <a href="#" class="nav-link"> Settings </a>
+          <a href="#" class="nav-link active">Dashboard</a>
+          <a href="#" class="nav-link">Products</a>
+          <a href="#" class="nav-link">Orders</a>
+          <a href="#" class="nav-link">Customers</a>
+          <a href="#" class="nav-link">Analytics</a>
+          <a href="#" class="nav-link">Settings</a>
         </nav>
       </aside>
 
-      <!-- Main Content -->
+      <!-- ===============================
+           Main Content
+      ================================ -->
+
       <main class="main-content">
         <!-- Header -->
+
         <header class="header">
           <div>
             <h1>Dashboard</h1>
@@ -46,18 +48,27 @@
                 id="searchInput"
                 placeholder="Search orders..."
               />
+
               <button class="search-button">Search</button>
             </div>
 
             <button class="notification-button">Notifications</button>
+
             <button class="theme-button" id="themeButton">🌙</button>
+
             <div class="profile">Admin</div>
           </div>
         </header>
 
-        <!-- Dashboard Content -->
+        <!-- ===============================
+             Dashboard Content
+        ================================ -->
+
         <section class="dashboard-content">
-          <!-- Statistics -->
+          <!-- ===============================
+               Statistics
+          ================================ -->
+
           <div class="stats-grid">
             <div class="stat-card">
               <p>Total Revenue</p>
@@ -84,7 +95,10 @@
             </div>
           </div>
 
-          <!-- Sales Chart -->
+          <!-- ===============================
+               Sales Chart
+          ================================ -->
+
           <section class="chart-card">
             <div class="section-header">
               <div>
@@ -100,9 +114,15 @@
             </div>
           </section>
 
-          <!-- Bottom Section -->
+          <!-- ===============================
+               Orders + Products
+          ================================ -->
+
           <div class="bottom-grid">
-            <!-- Recent Orders -->
+            <!-- ===============================
+                 Recent Orders
+            ================================ -->
+
             <section class="orders-card">
               <div class="section-header">
                 <div>
@@ -110,12 +130,30 @@
                   <p>Latest customer orders</p>
                 </div>
 
-                <button>View All</button>
+                <!-- Order Filters -->
+
+                <div class="order-filters">
+                  <button class="filter-button active" data-status="all">
+                    All
+                  </button>
+
+                  <button class="filter-button" data-status="Completed">
+                    Completed
+                  </button>
+
+                  <button class="filter-button" data-status="Pending">
+                    Pending
+                  </button>
+                </div>
               </div>
+
+              <!-- Orders Table -->
 
               <div class="table-container">
                 <p id="loadingMessage">Loading orders...</p>
+
                 <p id="errorMessage"></p>
+
                 <table>
                   <thead>
                     <tr>
@@ -128,21 +166,6 @@
                   </thead>
 
                   <tbody>
-                    <tr>
-                      <td>#1025</td>
-                      <td>Emma Brown</td>
-                      <td>Smart Watch</td>
-                      <td>$199</td>
-                      <td>Pending</td>
-                    </tr>
-
-                    <tr>
-                      <td>#1026</td>
-                      <td>Michael Lee</td>
-                      <td>Mechanical Keyboard</td>
-                      <td>$149</td>
-                      <td>Completed</td>
-                    </tr>
                     <tr id="noResults">
                       <td colspan="5">No orders found</td>
                     </tr>
@@ -151,7 +174,10 @@
               </div>
             </section>
 
-            <!-- Top Products -->
+            <!-- ===============================
+                 Top Products
+            ================================ -->
+
             <section class="products-card">
               <div class="section-header">
                 <div>
@@ -162,23 +188,27 @@
 
               <div class="product-list">
                 <div class="product-item">
-                  <span>Wireless Headphones</span>
-                  <strong>$12,450</strong>
+                  <span> Wireless Headphones </span>
+
+                  <strong> $12,450 </strong>
                 </div>
 
                 <div class="product-item">
-                  <span>Smart Watch</span>
-                  <strong>$9,820</strong>
+                  <span> Smart Watch </span>
+
+                  <strong> $9,820 </strong>
                 </div>
 
                 <div class="product-item">
-                  <span>Mechanical Keyboard</span>
-                  <strong>$7,540</strong>
+                  <span> Mechanical Keyboard </span>
+
+                  <strong> $7,540 </strong>
                 </div>
 
                 <div class="product-item">
-                  <span>Gaming Mouse</span>
-                  <strong>$5,240</strong>
+                  <span> Gaming Mouse </span>
+
+                  <strong> $5,240 </strong>
                 </div>
               </div>
             </section>
@@ -186,7 +216,15 @@
         </section>
       </main>
     </div>
+
+    <!-- ===============================
+         Chart.js
+    ================================ -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Main JavaScript -->
+
     <script src="script.js"></script>
   </body>
 </html>
