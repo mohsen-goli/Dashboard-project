@@ -30,8 +30,6 @@ themeButton.addEventListener("click", function () {
 // Orders
 // ===============================
 
-// فعلاً سفارش‌ها خالی هستند.
-// بعداً اطلاعات را از JSON می‌گیریم.
 let orders = [];
 
 // ===============================
@@ -41,8 +39,6 @@ let orders = [];
 const ordersTableBody = document.querySelector("tbody");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
-const loadingMessage = document.getElementById("loadingMessage");
-const errorMessage = document.getElementById("errorMessage");
 
 // ===============================
 // Dashboard Elements
@@ -51,6 +47,9 @@ const errorMessage = document.getElementById("errorMessage");
 const totalOrders = document.getElementById("totalOrders");
 const totalRevenue = document.getElementById("totalRevenue");
 const totalCustomers = document.getElementById("totalCustomers");
+
+const loadingMessage = document.getElementById("loadingMessage");
+const errorMessage = document.getElementById("errorMessage");
 
 // ===============================
 // Update Dashboard Stats
@@ -137,22 +136,126 @@ searchInput.addEventListener("input", function () {
 });
 
 // ===============================
+
+// Sales Chart
+// ===============================
+
+function createSalesChart() {
+  const monthlySales = {};
+
+  // Go through every order
+  orders.forEach(function (order) {
+    const date = new Date(order.date);
+
+    const month = date.toLocaleString("en-US", {
+      month: "short",
+    });
+
+    const price = Number(order.price.replace("$", ""));
+
+    // Create month if it doesn't exist
+    if (!monthlySales[month]) {
+      monthlySales[month] = 0;
+    }
+
+    // Add order price to that month
+    monthlySales[month] += price;
+  });
+
+  const labels = Object.keys(monthlySales);
+
+  const data = Object.values(monthlySales);
+
+  const salesChart = document.getElementById("salesChart");
+
+  new Chart(salesChart, {
+    type: "line",
+
+    data: {
+      labels: labels,
+
+      datasets: [
+        {
+          label: "Sales",
+
+          data: data,
+
+          borderWidth: 3,
+
+          tension: 0.4,
+
+          pointRadius: 4,
+
+          pointHoverRadius: 6,
+
+          fill: false,
+        },
+      ],
+    },
+
+    options: {
+      responsive: true,
+
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          display: false,
+        },
+
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return "$" + context.parsed.y.toLocaleString();
+            },
+          },
+        },
+      },
+
+      scales: {
+        y: {
+          beginAtZero: true,
+
+          ticks: {
+            callback: function (value) {
+              return "$" + value.toLocaleString();
+            },
+          },
+        },
+      },
+    },
+  });
+}
+// ===============================
 // Load Orders From JSON
 // ===============================
 
 fetch("./data/orders.json")
   .then(function (response) {
+    if (!response.ok) {
+      throw new Error("Failed to load orders.json");
+    }
+
     return response.json();
   })
+
   .then(function (data) {
+    // Put JSON data inside orders
     orders = data;
 
+    // Hide loading message
     loadingMessage.style.display = "none";
 
+    // Update dashboard numbers
     updateStats();
 
+    // Show orders in table
     renderOrders(orders);
+
+    // Create sales chart
+    createSalesChart();
   })
+
   .catch(function (error) {
     loadingMessage.style.display = "none";
 
