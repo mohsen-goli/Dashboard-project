@@ -84,6 +84,11 @@ function renderOrders(orderList) {
             <td>${order.product}</td>
             <td>${order.price}</td>
             <td>${order.status}</td>
+            <td>
+        <span class="status ${order.status.toLowerCase()}">
+            ${order.status}
+        </span>
+    </td>
         `;
 
     ordersTableBody.insertBefore(row, noResults);
@@ -129,3 +134,19 @@ searchInput.addEventListener("input", function () {
 const totalOrders = document.getElementById("totalOrders");
 
 totalOrders.textContent = orders.length;
+const totalRevenue = document.getElementById("totalRevenue");
+
+const revenue = orders.reduce(function (total, order) {
+  return total + Number(order.price.replace("$", ""));
+}, 0);
+
+totalRevenue.textContent = "$" + revenue.toLocaleString();
+const totalCustomers = document.getElementById("totalCustomers");
+
+const customers = new Set(
+  orders.map(function (order) {
+    return order.customer;
+  }),
+);
+
+totalCustomers.textContent = customers.size;
