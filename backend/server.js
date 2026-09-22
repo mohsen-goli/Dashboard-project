@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const pool = require("./db");
 
 const app = express();
 
@@ -7,45 +8,6 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = 3000;
-
-// ===============================
-// Orders Data
-// ===============================
-
-const orders = [
-  {
-    id: "#1024",
-    customer: "John Smith",
-    product: "Wireless Headphones",
-    price: "$129",
-    status: "Completed",
-    date: "2026-03-15",
-  },
-  {
-    id: "#1025",
-    customer: "Emma Brown",
-    product: "Smart Watch",
-    price: "$199",
-    status: "Pending",
-    date: "2026-04-10",
-  },
-  {
-    id: "#1026",
-    customer: "Michael Lee",
-    product: "Mechanical Keyboard",
-    price: "$149",
-    status: "Completed",
-    date: "2026-05-22",
-  },
-  {
-    id: "#1027",
-    customer: "Sarah Wilson",
-    product: "Gaming Mouse",
-    price: "$100",
-    status: "Completed",
-    date: "2026-03-20",
-  },
-];
 
 // ===============================
 // Test Route
@@ -59,28 +21,46 @@ app.get("/", function (req, res) {
 // GET - All Orders
 // ===============================
 
-app.get("/api/orders", function (req, res) {
-  res.json(orders);
+app.get("/api/orders", async function (req, res) {
+  try {
+    const result = await pool.query("SELECT * FROM orders");
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+
+    res.status(500).json({
+      message: "Failed to fetch orders",
+    });
+  }
 });
 
 // ===============================
 // GET - Single Order
 // ===============================
 
-app.get("/api/orders/:id", function (req, res) {
-  const orderId = req.params.id;
+app.get("/api/orders/:id", async function (req, res) {
+  try {
+    const orderId = "#" + req.params.id;
 
-  const order = orders.find(function (item) {
-    return item.id === "#" + orderId;
-  });
+    const result = await pool.query("SELECT * FROM orders WHERE id = $1", [
+      orderId,
+    ]);
 
-  if (!order) {
-    return res.status(404).json({
-      message: "Order not found",
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error fetching order:", error.message);
+
+    res.status(500).json({
+      message: "Failed to fetch order",
     });
   }
-
-  res.json(order);
 });
 
 // ===============================
@@ -88,18 +68,9 @@ app.get("/api/orders/:id", function (req, res) {
 // ===============================
 
 app.post("/api/orders", function (req, res) {
-  const newOrder = {
-    id: "#" + (1028 + orders.length - 4),
-    customer: req.body.customer,
-    product: req.body.product,
-    price: req.body.price,
-    status: req.body.status,
-    date: req.body.date,
-  };
-
-  orders.push(newOrder);
-
-  res.status(201).json(newOrder);
+  res.status(501).json({
+    message: "POST is temporarily disabled",
+  });
 });
 
 // ===============================
@@ -107,51 +78,18 @@ app.post("/api/orders", function (req, res) {
 // ===============================
 
 app.put("/api/orders/:id", function (req, res) {
-  const orderId = req.params.id;
-
-  const orderIndex = orders.findIndex(function (item) {
-    return item.id === "#" + orderId;
+  res.status(501).json({
+    message: "PUT is temporarily disabled",
   });
-
-  if (orderIndex === -1) {
-    return res.status(404).json({
-      message: "Order not found",
-    });
-  }
-
-  orders[orderIndex] = {
-    ...orders[orderIndex],
-    customer: req.body.customer,
-    product: req.body.product,
-    price: req.body.price,
-    status: req.body.status,
-    date: req.body.date,
-  };
-
-  res.json(orders[orderIndex]);
 });
+
 // ===============================
 // DELETE - Delete Order
 // ===============================
 
 app.delete("/api/orders/:id", function (req, res) {
-  const orderId = req.params.id;
-
-  const orderIndex = orders.findIndex(function (item) {
-    return item.id === "#" + orderId;
-  });
-
-  if (orderIndex === -1) {
-    return res.status(404).json({
-      message: "Order not found",
-    });
-  }
-
-  const deletedOrder = orders.splice(orderIndex, 1);
-
-  res.json({
-    message: "Order deleted successfully",
-    order: deletedOrder[0],
+  res.status(501).json({
+    message: "DELETE is temporarily disabled",
   });
 });
 
