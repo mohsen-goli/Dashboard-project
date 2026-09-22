@@ -122,22 +122,16 @@ let selectedSort = "newest";
 function applyFilters() {
   const searchTerm = searchInput.value.toLowerCase().trim();
 
-  let filteredOrders = orders;
+  let filteredOrders = [...orders];
 
-  // -------------------------------
-  // Filter by Status
-  // -------------------------------
-
+  // Status Filter
   if (selectedStatus !== "all") {
     filteredOrders = filteredOrders.filter(function (order) {
       return order.status === selectedStatus;
     });
   }
 
-  // -------------------------------
-  // Filter by Search
-  // -------------------------------
-
+  // Search
   if (searchTerm !== "") {
     filteredOrders = filteredOrders.filter(function (order) {
       return (
@@ -150,39 +144,28 @@ function applyFilters() {
     });
   }
 
-  // -------------------------------
-  // Sort Orders
-  // -------------------------------
-
+  // Sort
   filteredOrders.sort(function (a, b) {
-    // Newest
     if (selectedSort === "newest") {
       return new Date(b.date) - new Date(a.date);
     }
 
-    // Oldest
     if (selectedSort === "oldest") {
       return new Date(a.date) - new Date(b.date);
     }
 
-    // Highest Price
     if (selectedSort === "highest") {
       return (
         Number(b.price.replace("$", "")) - Number(a.price.replace("$", ""))
       );
     }
 
-    // Lowest Price
     if (selectedSort === "lowest") {
       return (
         Number(a.price.replace("$", "")) - Number(b.price.replace("$", ""))
       );
     }
   });
-
-  // -------------------------------
-  // Render Final Result
-  // -------------------------------
 
   renderOrders(filteredOrders);
 }
@@ -251,7 +234,6 @@ function createSalesChart() {
   });
 
   const labels = Object.keys(monthlySales);
-
   const data = Object.values(monthlySales);
 
   const salesChart = document.getElementById("salesChart");
@@ -265,17 +247,11 @@ function createSalesChart() {
       datasets: [
         {
           label: "Sales",
-
           data: data,
-
           borderWidth: 3,
-
           tension: 0.4,
-
           pointRadius: 4,
-
           pointHoverRadius: 6,
-
           fill: false,
         },
       ],
@@ -316,13 +292,13 @@ function createSalesChart() {
 }
 
 // ===============================
-// Load Orders From JSON
+// Load Orders From Our Express API
 // ===============================
 
-fetch("./data/orders.json")
+fetch("http://localhost:3000/api/orders")
   .then(function (response) {
     if (!response.ok) {
-      throw new Error("Failed to load orders.json");
+      throw new Error("Failed to load orders");
     }
 
     return response.json();
