@@ -39,7 +39,7 @@ let orders = [];
 const ordersTableBody = document.querySelector("tbody");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
-const filterButtons = document.querySelectorAll(".filter-button");
+
 // ===============================
 // Dashboard Elements
 // ===============================
@@ -56,17 +56,14 @@ const errorMessage = document.getElementById("errorMessage");
 // ===============================
 
 function updateStats() {
-  // Total Orders
   totalOrders.textContent = orders.length;
 
-  // Total Revenue
   const revenue = orders.reduce(function (total, order) {
     return total + Number(order.price.replace("$", ""));
   }, 0);
 
   totalRevenue.textContent = "$" + revenue.toLocaleString();
 
-  // Total Customers
   const customers = new Set(
     orders.map(function (order) {
       return order.customer;
@@ -81,14 +78,12 @@ function updateStats() {
 // ===============================
 
 function renderOrders(orderList) {
-  // Remove old rows
   const existingRows = ordersTableBody.querySelectorAll("tr:not(#noResults)");
 
   existingRows.forEach(function (row) {
     row.remove();
   });
 
-  // Create new rows
   orderList.forEach(function (order) {
     const row = document.createElement("tr");
 
@@ -107,7 +102,6 @@ function renderOrders(orderList) {
     ordersTableBody.insertBefore(row, noResults);
   });
 
-  // Show / hide "No orders found"
   if (orderList.length === 0) {
     noResults.style.display = "";
   } else {
@@ -116,34 +110,132 @@ function renderOrders(orderList) {
 }
 
 // ===============================
-// Search Orders
+// Search + Status Filters + Sort
+// ===============================
+
+const filterButtons = document.querySelectorAll(".filter-button");
+const sortSelect = document.getElementById("sortSelect");
+
+let selectedStatus = "all";
+let selectedSort = "newest";
+
+function applyFilters() {
+  const searchTerm = searchInput.value.toLowerCase().trim();
+
+  let filteredOrders = orders;
+
+  // -------------------------------
+  // Filter by Status
+  // -------------------------------
+
+  if (selectedStatus !== "all") {
+    filteredOrders = filteredOrders.filter(function (order) {
+      return order.status === selectedStatus;
+    });
+  }
+
+  // -------------------------------
+  // Filter by Search
+  // -------------------------------
+
+  if (searchTerm !== "") {
+    filteredOrders = filteredOrders.filter(function (order) {
+      return (
+        order.id.toLowerCase().includes(searchTerm) ||
+        order.customer.toLowerCase().includes(searchTerm) ||
+        order.product.toLowerCase().includes(searchTerm) ||
+        order.price.toLowerCase().includes(searchTerm) ||
+        order.status.toLowerCase().includes(searchTerm)
+      );
+    });
+  }
+
+  // -------------------------------
+  // Sort Orders
+  // -------------------------------
+
+  filteredOrders.sort(function (a, b) {
+    // Newest
+    if (selectedSort === "newest") {
+      return new Date(b.date) - new Date(a.date);
+    }
+
+    // Oldest
+    if (selectedSort === "oldest") {
+      return new Date(a.date) - new Date(b.date);
+    }
+
+    // Highest Price
+    if (selectedSort === "highest") {
+      return (
+        Number(b.price.replace("$", "")) - Number(a.price.replace("$", ""))
+      );
+    }
+
+    // Lowest Price
+    if (selectedSort === "lowest") {
+      return (
+        Number(a.price.replace("$", "")) - Number(b.price.replace("$", ""))
+      );
+    }
+  });
+
+  // -------------------------------
+  // Render Final Result
+  // -------------------------------
+
+  renderOrders(filteredOrders);
+}
+
+// ===============================
+// Search Event
 // ===============================
 
 searchInput.addEventListener("input", function () {
-  const searchTerm = searchInput.value.toLowerCase().trim();
-
-  const filteredOrders = orders.filter(function (order) {
-    return (
-      order.id.toLowerCase().includes(searchTerm) ||
-      order.customer.toLowerCase().includes(searchTerm) ||
-      order.product.toLowerCase().includes(searchTerm) ||
-      order.price.toLowerCase().includes(searchTerm) ||
-      order.status.toLowerCase().includes(searchTerm)
-    );
-  });
-
-  renderOrders(filteredOrders);
+  applyFilters();
 });
 
 // ===============================
+// Status Filter Event
+// ===============================
 
+filterButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    selectedStatus = button.dataset.status;
+
+    filterButtons.forEach(function (item) {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    applyFilters();
+  });
+});
+
+// ===============================
+// Sort Event
+// ===============================
+
+sortSelect.addEventListener("change", function () {
+  selectedSort = sortSelect.value;
+
+  applyFilters();
+});
+
+// ===============================
 // Sales Chart
 // ===============================
 
 function createSalesChart() {
+  const months = ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"];
+
   const monthlySales = {};
 
-  // Go through every order
+  months.forEach(function (month) {
+    monthlySales[month] = 0;
+  });
+
   orders.forEach(function (order) {
     const date = new Date(order.date);
 
@@ -152,40 +244,10 @@ function createSalesChart() {
     });
 
     const price = Number(order.price.replace("$", ""));
-    // ===============================
-    // Order Status Filter
-    // ===============================
 
-    filterButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        const selectedStatus = button.dataset.status;
-
-        filterButtons.forEach(function (item) {
-          item.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        if (selectedStatus === "all") {
-          renderOrders(orders);
-          return;
-        }
-
-        const filteredOrders = orders.filter(function (order) {
-          return order.status === selectedStatus;
-        });
-
-        renderOrders(filteredOrders);
-      });
-    });
-
-    // Create month if it doesn't exist
-    if (!monthlySales[month]) {
-      monthlySales[month] = 0;
+    if (monthlySales[month] !== undefined) {
+      monthlySales[month] += price;
     }
-
-    // Add order price to that month
-    monthlySales[month] += price;
   });
 
   const labels = Object.keys(monthlySales);
@@ -252,6 +314,7 @@ function createSalesChart() {
     },
   });
 }
+
 // ===============================
 // Load Orders From JSON
 // ===============================
@@ -266,19 +329,14 @@ fetch("./data/orders.json")
   })
 
   .then(function (data) {
-    // Put JSON data inside orders
     orders = data;
 
-    // Hide loading message
     loadingMessage.style.display = "none";
 
-    // Update dashboard numbers
     updateStats();
 
-    // Show orders in table
-    renderOrders(orders);
+    applyFilters();
 
-    // Create sales chart
     createSalesChart();
   })
 

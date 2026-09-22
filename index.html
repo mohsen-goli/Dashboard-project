@@ -132,18 +132,30 @@
 
                 <!-- Order Filters -->
 
-                <div class="order-filters">
-                  <button class="filter-button active" data-status="all">
-                    All
-                  </button>
+                <div class="order-controls">
+                  <div class="order-filters">
+                    <button class="filter-button active" data-status="all">
+                      All
+                    </button>
 
-                  <button class="filter-button" data-status="Completed">
-                    Completed
-                  </button>
+                    <button class="filter-button" data-status="Completed">
+                      Completed
+                    </button>
 
-                  <button class="filter-button" data-status="Pending">
-                    Pending
-                  </button>
+                    <button class="filter-button" data-status="Pending">
+                      Pending
+                    </button>
+                  </div>
+
+                  <select id="sortSelect" class="sort-select">
+                    <option value="newest">Newest</option>
+
+                    <option value="oldest">Oldest</option>
+
+                    <option value="highest">Highest Price</option>
+
+                    <option value="lowest">Lowest Price</option>
+                  </select>
                 </div>
               </div>
 
