@@ -67,10 +67,25 @@ app.get("/api/orders/:id", async function (req, res) {
 // POST - Create New Order
 // ===============================
 
-app.post("/api/orders", function (req, res) {
-  res.status(501).json({
-    message: "POST is temporarily disabled",
-  });
+app.post("/api/orders", async function (req, res) {
+  try {
+    const { id, customer, product, price, status, date } = req.body;
+
+    const result = await pool.query(
+      `INSERT INTO orders (id, customer, product, price, status, date)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [id, customer, product, price, status, date],
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error creating order:", error.message);
+
+    res.status(500).json({
+      message: "Failed to create order",
+    });
+  }
 });
 
 // ===============================
