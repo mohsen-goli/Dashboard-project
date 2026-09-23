@@ -130,10 +130,32 @@ app.put("/api/orders/:id", async function (req, res) {
 // DELETE - Delete Order
 // ===============================
 
-app.delete("/api/orders/:id", function (req, res) {
-  res.status(501).json({
-    message: "DELETE is temporarily disabled",
-  });
+app.delete("/api/orders/:id", async function (req, res) {
+  try {
+    const orderId = "#" + req.params.id;
+
+    const result = await pool.query(
+      "DELETE FROM orders WHERE id = $1 RETURNING *",
+      [orderId],
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    res.json({
+      message: "Order deleted successfully",
+      order: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Error deleting order:", error.message);
+
+    res.status(500).json({
+      message: "Failed to delete order",
+    });
+  }
 });
 
 // ===============================

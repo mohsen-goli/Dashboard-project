@@ -27,6 +27,28 @@ themeButton.addEventListener("click", function () {
 });
 
 // ===============================
+// Notifications
+// ===============================
+
+const notificationButton = document.getElementById("notificationButton");
+const notificationPanel = document.getElementById("notificationPanel");
+
+notificationButton.addEventListener("click", function (event) {
+  event.stopPropagation();
+
+  notificationPanel.classList.toggle("show");
+});
+
+document.addEventListener("click", function (event) {
+  if (
+    !notificationPanel.contains(event.target) &&
+    !notificationButton.contains(event.target)
+  ) {
+    notificationPanel.classList.remove("show");
+  }
+});
+
+// ===============================
 // Orders
 // ===============================
 
@@ -59,7 +81,7 @@ function updateStats() {
   totalOrders.textContent = orders.length;
 
   const revenue = orders.reduce(function (total, order) {
-    return total + Number(order.price.replace("$", ""));
+    return total + Number(String(order.price).replace("$", ""));
   }, 0);
 
   totalRevenue.textContent = "$" + revenue.toLocaleString();
@@ -71,6 +93,49 @@ function updateStats() {
   );
 
   totalCustomers.textContent = customers.size;
+}
+
+// ===============================
+// Delete Order
+// ===============================
+
+async function deleteOrder(orderId) {
+  const confirmed = confirm(
+    `Are you sure you want to delete order ${orderId}?`,
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/orders/${orderId.replace("#", "")}`,
+      {
+        method: "DELETE",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete order");
+    }
+
+    const data = await response.json();
+
+    console.log("Deleted order:", data);
+
+    orders = orders.filter(function (order) {
+      return order.id !== orderId;
+    });
+
+    updateStats();
+
+    applyFilters();
+  } catch (error) {
+    console.error("Error deleting order:", error);
+
+    alert("Failed to delete order.");
+  }
 }
 
 // ===============================
@@ -88,16 +153,31 @@ function renderOrders(orderList) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-            <td>${order.id}</td>
-            <td>${order.customer}</td>
-            <td>${order.product}</td>
-            <td>${order.price}</td>
-            <td>
-                <span class="status ${order.status.toLowerCase()}">
-                    ${order.status}
-                </span>
-            </td>
-        `;
+      <td>${order.id}</td>
+
+      <td>${order.customer}</td>
+
+      <td>${order.product}</td>
+
+      <td>
+        $${Number(order.price).toLocaleString()}
+      </td>
+
+      <td>
+        <span class="status ${order.status.toLowerCase()}">
+          ${order.status}
+        </span>
+      </td>
+
+      <td>
+        <button
+          class="delete-order-button"
+          data-id="${order.id}"
+        >
+          Delete
+        </button>
+      </td>
+    `;
 
     ordersTableBody.insertBefore(row, noResults);
   });
@@ -107,6 +187,18 @@ function renderOrders(orderList) {
   } else {
     noResults.style.display = "none";
   }
+
+  // ===============================
+  // Delete Buttons
+  // ===============================
+
+  const deleteButtons = document.querySelectorAll(".delete-order-button");
+
+  deleteButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      deleteOrder(button.dataset.id);
+    });
+  });
 }
 
 // ===============================
@@ -124,27 +216,36 @@ function applyFilters() {
 
   let filteredOrders = [...orders];
 
+  // ===============================
   // Status Filter
+  // ===============================
+
   if (selectedStatus !== "all") {
     filteredOrders = filteredOrders.filter(function (order) {
       return order.status === selectedStatus;
     });
   }
 
+  // ===============================
   // Search
+  // ===============================
+
   if (searchTerm !== "") {
     filteredOrders = filteredOrders.filter(function (order) {
       return (
         order.id.toLowerCase().includes(searchTerm) ||
         order.customer.toLowerCase().includes(searchTerm) ||
         order.product.toLowerCase().includes(searchTerm) ||
-        order.price.toLowerCase().includes(searchTerm) ||
+        String(order.price).toLowerCase().includes(searchTerm) ||
         order.status.toLowerCase().includes(searchTerm)
       );
     });
   }
 
+  // ===============================
   // Sort
+  // ===============================
+
   filteredOrders.sort(function (a, b) {
     if (selectedSort === "newest") {
       return new Date(b.date) - new Date(a.date);
@@ -155,16 +256,14 @@ function applyFilters() {
     }
 
     if (selectedSort === "highest") {
-      return (
-        Number(b.price.replace("$", "")) - Number(a.price.replace("$", ""))
-      );
+      return Number(b.price) - Number(a.price);
     }
 
     if (selectedSort === "lowest") {
-      return (
-        Number(a.price.replace("$", "")) - Number(b.price.replace("$", ""))
-      );
+      return Number(a.price) - Number(b.price);
     }
+
+    return 0;
   });
 
   renderOrders(filteredOrders);
@@ -226,7 +325,7 @@ function createSalesChart() {
       month: "short",
     });
 
-    const price = Number(order.price.replace("$", ""));
+    const price = Number(order.price);
 
     if (monthlySales[month] !== undefined) {
       monthlySales[month] += price;
@@ -292,7 +391,7 @@ function createSalesChart() {
 }
 
 // ===============================
-// Load Orders From Our Express API
+// Load Orders From Express API
 // ===============================
 
 fetch("http://localhost:3000/api/orders")

@@ -42,21 +42,65 @@
           </div>
 
           <div class="header-actions">
+            <!-- Search -->
+
             <div class="search-box">
+              <span class="search-icon">⌕</span>
+
               <input
                 type="text"
                 id="searchInput"
-                placeholder="Search orders..."
+                placeholder="Search orders, customers, products..."
               />
-
-              <button class="search-button">Search</button>
             </div>
 
-            <button class="notification-button">Notifications</button>
+            <!-- Notifications -->
+
+            <div class="notification-wrapper">
+              <button class="notification-button" id="notificationButton">
+                🔔
+              </button>
+
+              <div class="notification-panel" id="notificationPanel">
+                <div class="notification-header">
+                  <strong>Notifications</strong>
+                  <span>3 new</span>
+                </div>
+
+                <div class="notification-item">
+                  <span class="notification-dot"></span>
+
+                  <div>
+                    <strong>New order received</strong>
+                    <p>Order #1028 has been created.</p>
+                  </div>
+                </div>
+
+                <div class="notification-item">
+                  <span class="notification-dot"></span>
+
+                  <div>
+                    <strong>Order completed</strong>
+                    <p>Order #1026 was completed.</p>
+                  </div>
+                </div>
+
+                <div class="notification-item">
+                  <span class="notification-dot"></span>
+
+                  <div>
+                    <strong>Dashboard updated</strong>
+                    <p>Your sales data is up to date.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Theme -->
 
             <button class="theme-button" id="themeButton">🌙</button>
 
-            <div class="profile">Admin</div>
+            <!-- Profile -->
           </div>
         </header>
 
@@ -149,11 +193,8 @@
 
                   <select id="sortSelect" class="sort-select">
                     <option value="newest">Newest</option>
-
                     <option value="oldest">Oldest</option>
-
                     <option value="highest">Highest Price</option>
-
                     <option value="lowest">Lowest Price</option>
                   </select>
                 </div>
@@ -174,12 +215,13 @@
                       <th>Product</th>
                       <th>Price</th>
                       <th>Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     <tr id="noResults">
-                      <td colspan="5">No orders found</td>
+                      <td colspan="6">No orders found</td>
                     </tr>
                   </tbody>
                 </table>
@@ -200,27 +242,23 @@
 
               <div class="product-list">
                 <div class="product-item">
-                  <span> Wireless Headphones </span>
-
-                  <strong> $12,450 </strong>
+                  <span>Wireless Headphones</span>
+                  <strong>$12,450</strong>
                 </div>
 
                 <div class="product-item">
-                  <span> Smart Watch </span>
-
-                  <strong> $9,820 </strong>
+                  <span>Smart Watch</span>
+                  <strong>$9,820</strong>
                 </div>
 
                 <div class="product-item">
-                  <span> Mechanical Keyboard </span>
-
-                  <strong> $7,540 </strong>
+                  <span>Mechanical Keyboard</span>
+                  <strong>$7,540</strong>
                 </div>
 
                 <div class="product-item">
-                  <span> Gaming Mouse </span>
-
-                  <strong> $5,240 </strong>
+                  <span>Gaming Mouse</span>
+                  <strong>$5,240</strong>
                 </div>
               </div>
             </section>
