@@ -1,4 +1,10 @@
 // ===============================
+// API Configuration
+// ===============================
+
+const API_BASE_URL = "https://nova-admin-api-theta.vercel.app/api";
+
+// ===============================
 // Sidebar Navigation
 // ===============================
 
@@ -110,7 +116,7 @@ async function deleteOrder(orderId) {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/orders/${orderId.replace("#", "")}`,
+      `${API_BASE_URL}/orders/${orderId.replace("#", "")}`,
       {
         method: "DELETE",
       },
@@ -394,7 +400,7 @@ function createSalesChart() {
 // Load Orders From Express API
 // ===============================
 
-fetch("http://localhost:3000/api/orders")
+fetch(`${API_BASE_URL}/orders`)
   .then(function (response) {
     if (!response.ok) {
       throw new Error("Failed to load orders");
