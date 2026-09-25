@@ -1,136 +1,188 @@
 # NovaAdmin — Responsive Admin Dashboard
 
-A responsive admin dashboard built with **HTML, CSS and JavaScript** for managing orders, tracking revenue and visualizing business data.
+A modern, responsive admin dashboard built with **HTML, CSS, JavaScript and REST API** for managing orders, tracking revenue, and visualizing business data.
 
-The project was designed to simulate a real-world dashboard for an e-commerce business.
+The project simulates a real-world e-commerce administration panel with dynamic data, order management, filtering, search, charts, dark mode, and multilingual support.
+
+## 🚀 Live Demo
+
+**[View NovaAdmin Live Demo](https://nova-admin-dashboard-two.vercel.app/)**
 
 ## ✨ Features
 
 * 📊 Dashboard overview
-* 📦 Dynamic order management
-* 🔎 Order search
-* 🏷️ Order status filtering
+* 🛒 Dynamic order management
+* 🔍 Order search
+* 🎯 Order status filtering
+* ➕ Add new orders
+* ✏️ Edit existing orders
+* 🗑️ Delete orders
 * 💰 Dynamic total revenue calculation
-* 📈 Sales/order chart
+* 📦 Dynamic total orders statistics
+* 📈 Monthly sales and order charts
 * 🌙 Dark mode
-* 📱 Responsive sidebar and layout
-* 📋 Dynamic data rendering from JSON
-* 🚫 Empty-state message when no orders match the search/filter
+* 🌐 Persian / English language support
+* 📱 Fully responsive layout
+* 📋 Dynamic data rendering
+* 🔄 REST API integration
+* ⚡ Real-time UI updates after CRUD operations
+* 🧩 Empty-state messages
+* 📂 Backend API for order management
 
 ## 🛠️ Technologies
+
+### Frontend
 
 * HTML5
 * CSS3
 * JavaScript (ES6+)
-* JSON
 * Fetch API
 * Responsive Web Design
+* Chart.js
 
-## 📊 Data & API Simulation
+### Backend
 
-Order data is currently loaded from a local JSON file.
+* Node.js
+* Express.js
+* REST API
+* JSON-based data storage
 
-```text
-orders.json
-```
+### Tools
 
-The project uses JavaScript to fetch the data, render orders dynamically, calculate dashboard statistics and update the interface based on user interactions.
+* Git
+* GitHub
+* Vercel
+* VS Code
 
-This structure can later be connected to a real REST API or backend service.
-
-## 🔎 Search & Filtering
-
-Users can search through orders and filter them based on their status.
-
-The search and filtering functionality works together to dynamically update the order list.
-
-## 💰 Dynamic Statistics
-
-Dashboard statistics are calculated from the order data rather than being hard-coded.
-
-For example:
-
-* Total Orders
-* Total Revenue
-* Order status information
-* Chart data
-
-This allows the dashboard to automatically update when the underlying data changes.
-
-## 📈 Charts
-
-The dashboard visualizes order-related data using JavaScript-generated chart data.
-
-The chart is connected to the underlying order dataset rather than using completely static values.
-
-## 🌙 Dark Mode
-
-The dashboard includes a dark mode interface that allows users to switch between light and dark themes.
-
-## 📱 Responsive Design
-
-The interface is designed to work across:
-
-* Desktop
-* Tablet
-* Mobile
-
-The sidebar and dashboard layout adapt to smaller screen sizes.
-
-## 📂 Project Structure
+## 🏗️ Project Structure
 
 ```text
-Dashboard-project/
+NovaAdmin/
+│
+├── backend/
+│   ├── server.js
+│   └── ...
+│
+├── data/
+│   └── ...
 │
 ├── index.html
 ├── style.css
 ├── script.js
-├── orders.json
+├── .gitignore
 └── README.md
 ```
 
-## 🎯 Project Purpose
+## 🔌 REST API
 
-This project was built to practice developing a more realistic frontend application rather than a static webpage.
+The dashboard is connected to a backend REST API for managing orders.
 
-The main focus was on:
+The frontend communicates with the backend using the JavaScript `fetch()` API.
 
-* Dynamic data
-* JavaScript logic
+The API supports CRUD operations:
+
+```text
+GET     → Get orders
+POST    → Create a new order
+PUT     → Update an existing order
+DELETE  → Delete an order
+```
+
+This allows the dashboard to behave more like a real-world administration system rather than a static frontend project.
+
+## 📊 Dashboard Statistics
+
+The dashboard dynamically calculates and displays business statistics such as:
+
+* Total Orders
+* Total Revenue
+* Order status distribution
+* Monthly sales
+* Monthly order volume
+
+Data is processed with JavaScript methods such as:
+
+```javascript
+map()
+filter()
+reduce()
+```
+
+## 🔍 Search & Filtering
+
+Users can search through orders and filter them based on their current status.
+
+The interface updates dynamically without requiring a page reload.
+
+## 📈 Charts
+
+The dashboard includes dynamic charts for visualizing business performance.
+
+Chart data is generated from the application data and includes monthly sales and order information.
+
+This demonstrates how raw business data can be transformed into useful visual information for an admin interface.
+
+## 🌙 Dark Mode
+
+NovaAdmin includes a dark mode that allows users to switch between light and dark themes.
+
+The interface is designed to keep the dashboard readable and usable across both modes.
+
+## 🌐 Multilingual Support
+
+The dashboard supports both:
+
+* 🇬🇧 English
+* 🇮🇷 Persian
+
+The interface can switch between languages while maintaining the dashboard structure and functionality.
+
+## 📱 Responsive Design
+
+The dashboard is designed to work across different screen sizes:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile
+
+The sidebar, tables, cards, charts, and other dashboard components adapt to smaller screens.
+
+## 🎯 What I Practiced
+
+This project helped me practice several important frontend and web-development concepts:
+
+* Working with JavaScript arrays and objects
+* `map()`, `filter()`, and `reduce()`
 * DOM manipulation
+* Fetch API
+* REST API communication
+* CRUD operations
+* Async JavaScript
+* Dynamic rendering
 * Search and filtering
-* Calculated statistics
-* JSON data handling
-* Responsive UI
-* Dashboard interactions
+* Form handling
+* Data visualization
+* Responsive layouts
+* Dark mode
+* Multilingual interfaces
+* Frontend ↔ Backend communication
+* Git and GitHub workflow
+* Deploying a web application with Vercel
 
-## 💡 What I Practiced
-
-Through this project I practiced:
-
-* Working with arrays of objects
-* Using `map()`, `filter()` and `reduce()`
-* Fetching JSON data with the Fetch API
-* Rendering dynamic content
-* Handling user interactions
-* Building search functionality
-* Combining search and filtering
-* Calculating revenue dynamically
-* Creating chart data
-* Managing UI state
-* Building responsive dashboard layouts
-
-## 🚀 Future Improvements
+## 🔮 Future Improvements
 
 Possible future improvements include:
 
-* Connecting the dashboard to a real REST API
-* Adding authentication
-* Adding real backend data
-* CRUD operations for orders
-* More advanced charts and analytics
-* Pagination
+* Authentication and authorization
 * User management
+* Database integration
+* Pagination
+* Advanced analytics
+* More interactive charts
+* Role-based access control
+* Improved API validation
+* Production database integration
 
 ## 👨‍💻 Author
 
@@ -138,6 +190,13 @@ Possible future improvements include:
 
 Junior Frontend Developer
 
-GitHub: https://github.com/mohsen-goli
+* GitHub: https://github.com/mohsen-goli
+* LinkedIn: https://www.linkedin.com/in/mohsen-golzad-a5495319b/
 
-LinkedIn: https://www.linkedin.com/in/mohsen-golzad-a5495319b
+## 🌐 Project Links
+
+**Live Demo:**
+https://nova-admin-dashboard-two.vercel.app/
+
+**GitHub Repository:**
+https://github.com/mohsen-goli/Dashboard-project
